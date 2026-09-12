@@ -5,7 +5,7 @@ import Modal from '../components/Modal';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faTrash, faEye, faUserTie, faUpload, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faTrash, faEye, faUserTie, faUpload, faCheckCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const Staff = () => {
   const [staffList, setStaffList] = useState([]);
@@ -107,8 +107,11 @@ const Staff = () => {
     }
   };
 
+  const [isSaving, setIsSaving] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     const data = new FormData();
     Object.keys(formData).forEach(key => {
       if (formData[key]) data.append(key, formData[key]);
@@ -142,7 +145,10 @@ const Staff = () => {
       }
       setIsModalOpen(false);
       fetchStaff();
-    } catch (err) { toast.error('Operation failed'); }
+    } catch (err) { toast.error(err.response?.data?.message || err.response?.data?.error || 'Operation failed'); }
+    finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -299,7 +305,15 @@ const Staff = () => {
               </select>
             </div>
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-95 transition-all shadow-lg hover:shadow-blue-500/30 mt-6">Save Staff</button>
+          <button type="submit" disabled={isSaving} className="w-full flex justify-center items-center gap-2 bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-95 transition-all shadow-lg hover:shadow-blue-500/30 mt-6 disabled:bg-blue-400 disabled:cursor-not-allowed">
+            {isSaving ? (
+              <>
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> Saving...
+              </>
+            ) : (
+              'Save Staff'
+            )}
+          </button>
         </form>
       </Modal>
     </div>
