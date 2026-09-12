@@ -7,7 +7,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-// Database connection handled in server start block
+// Connect to Database for Vercel
+connectDB();
+
 // Routes
 const userRoutes = require('./Routes/userRoutes');
 const roomRoutes = require('./Routes/roomRoutes');
