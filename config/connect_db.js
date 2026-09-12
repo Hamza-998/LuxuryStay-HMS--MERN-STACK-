@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// Override default DNS to prevent queryTxt ETIMEOUT on Atlas
-const dns = require('dns');
-dns.setServers(['1.1.1.1', '8.8.8.8']);
+// DNS override removed because it can break Vercel's serverless network egress
 
 let isConnected = false;
 

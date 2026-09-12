@@ -7,8 +7,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-// Connect to Database for Vercel
-connectDB();
+// Connect to Database middleware for Vercel Serverless
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
 
 // Routes
 const userRoutes = require('./Routes/userRoutes');
