@@ -1,0 +1,55 @@
+const express = require('express');
+const cors = require('cors');
+const connectDB = require('./config/connect_db');
+require('dotenv').config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+// Database connection handled in server start block
+// Routes
+const userRoutes = require('./Routes/userRoutes');
+const roomRoutes = require('./Routes/roomRoutes');
+const reservationRoutes = require('./Routes/reservationRoutes');
+const billingRoutes = require('./Routes/billingRoutes');
+
+const feedbackRoutes = require('./Routes/feedbackRoutes');
+const staffRoutes = require('./Routes/staffRoutes');
+const roleRoutes = require('./Routes/roleRoutes');
+const contactRoutes = require('./Routes/contactRoutes');
+const maintenanceRoutes = require('./Routes/maintenanceRoutes');
+const serviceRequestRoutes = require('./Routes/serviceRequestRoutes');
+const settingsRoutes = require('./Routes/settingsRoutes');
+const notificationRoutes = require('./Routes/notificationRoutes');
+
+app.use('/api/rooms', roomRoutes);
+app.use('/api/staff', staffRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/reservations', reservationRoutes);
+app.use('/api/billings', billingRoutes);
+app.use('/api/feedbacks', feedbackRoutes);
+app.use('/api/maintenance', maintenanceRoutes);
+app.use('/api/services', serviceRequestRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/analytics', require('./Routes/analyticsRoutes'));
+
+// Other routes kept for compatibility
+app.use('/api/contacts', contactRoutes);
+
+app.get('/', (req, res) => {
+    res.json({ message: 'LuxuryStay API is running' });
+});
+
+if (require.main === module) {
+    const port = process.env.PORT || 3000;
+    connectDB().then(() => {
+        app.listen(port, () => {
+            console.log(`Server running on http://localhost:${port}`);
+        });
+    });
+}
+
+// module.exports = app;
