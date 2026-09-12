@@ -149,6 +149,59 @@ const AboutUs = () => {
         </div>
       </div>
 
+      {/* 6. MEET OUR TEAM */}
+      <div className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Meet Our Team</h2>
+            <div className="w-24 h-1 bg-blue-600 mx-auto rounded-none"></div>
+            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+              The dedicated professionals working behind the scenes to make your stay unforgettable.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="bg-white rounded-none overflow-hidden shadow-sm hover:shadow-md transition">
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hotel Manager" className="w-full h-64 object-cover object-top" />
+              <div className="p-6 text-center">
+                <h3 className="text-xl font-bold text-gray-800 mb-1">David Wilson</h3>
+                <p className="text-blue-600 font-medium text-sm uppercase tracking-wide mb-3">General Manager</p>
+                <p className="text-gray-600 text-sm">Ensuring seamless operations and delivering the highest standard of hospitality.</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-none overflow-hidden shadow-sm hover:shadow-md transition">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Guest Relations" className="w-full h-64 object-cover object-top" />
+              <div className="p-6 text-center">
+                <h3 className="text-xl font-bold text-gray-800 mb-1">Sarah Jenkins</h3>
+                <p className="text-blue-600 font-medium text-sm uppercase tracking-wide mb-3">Guest Relations</p>
+                <p className="text-gray-600 text-sm">Dedicated to making every guest feel welcomed and valued from check-in to check-out.</p>
+              </div>
+            </div>
+            <div className="bg-white rounded-none overflow-hidden shadow-sm hover:shadow-md transition">
+              <img src="https://images.unsplash.com/photo-1583468982228-19f19164aee2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Executive Chef" className="w-full h-64 object-cover object-top" />
+              <div className="p-6 text-center">
+                <h3 className="text-xl font-bold text-gray-800 mb-1">Michael Chen</h3>
+                <p className="text-blue-600 font-medium text-sm uppercase tracking-wide mb-3">Executive Chef</p>
+                <p className="text-gray-600 text-sm">Crafting exquisite culinary experiences with fresh, locally sourced ingredients.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 7. CALL TO ACTION */}
+      <div className="py-16 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Ready for an unforgettable experience?</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Book your stay with LuxuryStay today and enjoy world-class amenities, exceptional service, and ultimate comfort.
+          </p>
+          <a href="/rooms" className="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-none hover:bg-blue-700 transition duration-300 shadow-md">
+            Book a Room Now
+          </a>
+        </div>
+      </div>
+
     </div>
   );
 };
