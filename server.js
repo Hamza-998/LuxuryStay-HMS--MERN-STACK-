@@ -43,13 +43,13 @@ app.get('/', (req, res) => {
     res.json({ message: 'LuxuryStay API is running' });
 });
 
-if (require.main === module) {
-    const port = process.env.PORT || 3000;
-    connectDB().then(() => {
-        app.listen(port, () => {
-            console.log(`Server running on http://localhost:${port}`);
-        });
-    });
-}
+// if (require.main === module) {
+//     const port = process.env.PORT || 3000;
+//     connectDB().then(() => {
+//         app.listen(port, () => {
+//             console.log(`Server running on http://localhost:${port}`);
+//         });
+//     });
+// }
 
-// module.exports = app;
+module.exports = app;
