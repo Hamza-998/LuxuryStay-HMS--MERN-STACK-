@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faConciergeBell, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
+import Swal from 'sweetalert2';
 
 const ServiceRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -61,13 +62,24 @@ const ServiceRequests = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this request?')) return;
-    try {
-      await api.delete(`/services/${id}`);
-      toast.success('Request deleted');
-      fetchData();
-    } catch (error) {
-      toast.error('Failed to delete request');
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await api.delete(`/services/${id}`);
+        toast.success('Request deleted');
+        fetchData();
+      } catch (error) {
+        toast.error('Failed to delete request');
+      }
     }
   };
 

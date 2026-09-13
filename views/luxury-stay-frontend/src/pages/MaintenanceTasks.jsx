@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faBroom, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
+import Swal from 'sweetalert2';
 
 const MaintenanceTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -97,7 +98,17 @@ const MaintenanceTasks = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this task?')) {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
       try {
         await api.delete(`/maintenance/${id}`);
         toast.success('Task deleted');
