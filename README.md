@@ -17,10 +17,9 @@ LuxuryStay is a comprehensive Hotel Management System built to streamline daily 
 
 ---
 
-## 🚀 Live Demo & API Links
+## 🚀 Live Demo 
 
-- **🌍 Live Website (Frontend):** [LuxuryStay Web App](https://luxurystay-hms-frontend.vercel.app/) *(Please update this link if your Vercel frontend URL is different)*
-- **⚙️ Live API (Backend):** [LuxuryStay Express API](https://luxurystay-hms-backend-olive.vercel.app/api)
+- **🌍 Live Website (Frontend):** [LuxuryStay Web App](https://luxurystay-hms-frontend.vercel.app/) 
 
 ---
 
@@ -97,8 +96,8 @@ npm run dev
 
 ---
 
-## 👥 Project Team (Final Year Project)
+## 👥 Project Team 
 - **Muhammad Hamza** (Team Lead)
 - **Shariq Mehmmod**
 
-> **Academic Note:** This project was developed as a Final Year Project for Aptech Computer Education under the supervision of Sir Faisal Khan (Session 2026).
+> **Academic Note:** This project was developed as a Final Year Project for Aptech Computer Education under the supervision of Sir Abdul Hafeez (Session 2026).
