@@ -49,6 +49,23 @@ const Register = () => {
     if (formData.password !== formData.confirmPassword) {
       return toast.error('Passwords do not match!');
     }
+
+    // Validation to prevent just dots or special characters
+    const validTextRegex = /[a-zA-Z0-9]/; // Must contain at least one letter or number
+    const invalidCharRegex = /^\.+$/; // Only dots
+
+    if (invalidCharRegex.test(formData.name) || !validTextRegex.test(formData.name)) {
+      return toast.error('Please enter a valid Full Name.');
+    }
+    if (formData.nationality && (invalidCharRegex.test(formData.nationality) || !validTextRegex.test(formData.nationality))) {
+      return toast.error('Please enter a valid Nationality.');
+    }
+    if (formData.city && (invalidCharRegex.test(formData.city) || !validTextRegex.test(formData.city))) {
+      return toast.error('Please enter a valid City name.');
+    }
+    if (formData.address && (invalidCharRegex.test(formData.address) || !validTextRegex.test(formData.address))) {
+      return toast.error('Please enter a valid Address.');
+    }
     
     setIsLoading(true);
     try {

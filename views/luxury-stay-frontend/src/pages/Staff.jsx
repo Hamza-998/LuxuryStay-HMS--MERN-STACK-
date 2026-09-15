@@ -111,6 +111,24 @@ const Staff = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation to prevent just dots or special characters
+    const validTextRegex = /[a-zA-Z0-9]/; // Must contain at least one letter or number
+    const invalidCharRegex = /^\.+$/; // Only dots
+
+    if (invalidCharRegex.test(formData.fullName) || !validTextRegex.test(formData.fullName)) {
+      return toast.error('Please enter a valid Full Name.');
+    }
+    if (formData.city && (invalidCharRegex.test(formData.city) || !validTextRegex.test(formData.city))) {
+      return toast.error('Please enter a valid City name.');
+    }
+    if (formData.address && (invalidCharRegex.test(formData.address) || !validTextRegex.test(formData.address))) {
+      return toast.error('Please enter a valid Address.');
+    }
+    if (formData.assignWork && (invalidCharRegex.test(formData.assignWork) || !validTextRegex.test(formData.assignWork))) {
+      return toast.error('Please enter valid text for Assign Work.');
+    }
+
     setIsSaving(true);
     const data = new FormData();
     Object.keys(formData).forEach(key => {

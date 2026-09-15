@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// DNS override removed because it can break Vercel's serverless network egress
+
 
 let isConnected = false;
 
@@ -17,7 +17,7 @@ const connectDB = async () => {
         }
 
         const db = await mongoose.connect(process.env.MONGO, {
-            serverSelectionTimeoutMS: 5000 // fail early if IP is not whitelisted
+            serverSelectionTimeoutMS: 5000 
         });
         
         isConnected = db.connections[0].readyState === 1;
