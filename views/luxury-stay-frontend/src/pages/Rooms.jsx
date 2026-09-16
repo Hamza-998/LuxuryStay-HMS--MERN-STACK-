@@ -5,10 +5,11 @@ import Modal from '../components/Modal';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faTrash, faEye, faMinus, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faTrash, faEye, faMinus, faSpinner, faWrench } from '@fortawesome/free-solid-svg-icons';
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
+  const [maintenanceTasks, setMaintenanceTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
   const navigate = useNavigate();
@@ -21,16 +22,20 @@ const Rooms = () => {
   const [beds, setBeds] = useState([{ bedType: 'Single', quantity: 1 }]);
   const [imageFiles, setImageFiles] = useState([]);
 
-  const fetchRooms = async () => {
+  const fetchData = async () => {
     try {
-      const { data } = await api.get('/rooms');
-      setRooms(data);
+      const [roomsRes, maintRes] = await Promise.all([
+        api.get('/rooms'),
+        api.get('/maintenance').catch(() => ({ data: [] }))
+      ]);
+      setRooms(roomsRes.data);
+      setMaintenanceTasks(maintRes.data);
     } catch (err) {
-      toast.error('Failed to fetch rooms');
+      toast.error('Failed to fetch rooms data');
     }
   };
 
-  useEffect(() => { fetchRooms(); }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const openAddModal = () => {
     setEditingRoom(null);
@@ -93,7 +98,7 @@ const Rooms = () => {
       try {
         await api.delete(`/rooms/${id}`);
         toast.success('Room deleted');
-        fetchRooms();
+        fetchData();
       } catch (err) {
         toast.error('Delete failed');
       }
@@ -104,7 +109,7 @@ const Rooms = () => {
     try {
       await api.put(`/rooms/${id}`, { status: newStatus });
       toast.success('Status updated');
-      fetchRooms();
+      fetchData();
     } catch (err) {
       toast.error('Failed to update status');
     }
@@ -137,7 +142,7 @@ const Rooms = () => {
         toast.success('Room added successfully');
       }
       setIsModalOpen(false);
-      fetchRooms();
+      fetchData();
     } catch (err) {
       toast.error('Operation failed');
     } finally {
@@ -177,9 +182,22 @@ const Rooms = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {rooms.map(room => (
+              {rooms.map(room => {
+                const activeMaintenance = maintenanceTasks.find(
+                  t => (t.roomId?._id === room._id || t.roomId === room._id) && 
+                       (t.status === 'Pending' || t.status === 'In Progress')
+                );
+                return (
                 <tr key={room._id} className="hover:bg-blue-50/30 transition-colors group">
-                  <td className="p-5 font-bold text-gray-800">{room.roomNumber}</td>
+                  <td className="p-5 font-bold text-gray-800 flex items-center gap-2">
+                    {room.roomNumber}
+                    {activeMaintenance && (
+                      <span title={`Maintenance: ${activeMaintenance.status}`} className={`px-2 py-0.5 rounded-md text-[10px] font-bold text-white shadow-sm ${activeMaintenance.status === 'Pending' ? 'bg-red-500' : 'bg-orange-500'}`}>
+                        <FontAwesomeIcon icon={faWrench} className="mr-1" />
+                        {activeMaintenance.status}
+                      </span>
+                    )}
+                  </td>
                   <td className="p-5">
                     <span className="font-medium text-gray-700">{room.type}</span>
                   </td>
@@ -223,7 +241,7 @@ const Rooms = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              )})}
               {rooms.length === 0 && (
                 <tr><td colSpan="6" className="p-8 text-center text-gray-400 font-medium">No rooms found.</td></tr>
               )}
