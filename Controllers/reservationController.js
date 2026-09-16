@@ -116,11 +116,15 @@ exports.updateReservation = async (req, res) => {
         // --- BILLING LOGIC: Cancel Before 24h & Early Checkout ---
         if (req.body.status === 'cancelled' && reservation.status !== 'cancelled') {
             const checkInDate = new Date(reservation.checkInDate);
-            const now = new Date();
-            const hoursUntilCheckin = (checkInDate - now) / (1000 * 60 * 60);
+            checkInDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const daysUntilCheckin = (checkInDate - today) / (1000 * 60 * 60 * 24);
 
-            if (hoursUntilCheckin >= 24) {
-                // Cancel Before 24h: Full Refund
+            if (daysUntilCheckin >= 1) {
+                // Cancelled at least 1 day before check-in (24h+): Full Refund
                 req.body.totalAmount = 0; 
             }
         }
@@ -128,19 +132,24 @@ exports.updateReservation = async (req, res) => {
         if (req.body.status === 'early-checkout' && reservation.status !== 'early-checkout') {
             // Early Checkout: Charge for stayed nights + Refund remaining
             const checkInDate = new Date(reservation.checkInDate);
+            checkInDate.setHours(0, 0, 0, 0);
+            
             const origCheckOutDate = new Date(reservation.checkOutDate);
-            const now = new Date();
+            origCheckOutDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
             let origNights = Math.ceil(Math.abs(origCheckOutDate - checkInDate) / (1000 * 60 * 60 * 24));
             if (origNights < 1) origNights = 1;
 
-            let stayedNights = Math.ceil(Math.abs(now - checkInDate) / (1000 * 60 * 60 * 24));
+            let stayedNights = Math.ceil(Math.abs(today - checkInDate) / (1000 * 60 * 60 * 24));
             if (stayedNights < 1) stayedNights = 1; // Min 1 night charge
 
             if (stayedNights < origNights) {
                 const dailyRate = reservation.totalAmount / origNights;
                 req.body.totalAmount = dailyRate * stayedNights;
-                req.body.checkOutDate = now; // update to today
+                req.body.checkOutDate = today; // update to today
             }
         }
         // --------------------------------------------------------
