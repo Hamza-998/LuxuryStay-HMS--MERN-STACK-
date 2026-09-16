@@ -146,9 +146,14 @@ const Users = () => {
                     <button onClick={() => openEditModal(u)} className="w-9 h-9 rounded-full bg-blue-50 text-blue-500 hover:bg-blue-100 hover:text-blue-700 transition-colors inline-flex items-center justify-center shrink-0" title="Edit">
                       <FontAwesomeIcon icon={faEdit} />
                     </button>
-                    <button onClick={() => handleDelete(u._id)} className="w-9 h-9 rounded-full bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 transition-colors inline-flex items-center justify-center shrink-0" title="Delete">
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
+                      <button 
+                        onClick={() => u.role?.toLowerCase() !== 'admin' && handleDelete(u._id)} 
+                        disabled={u.role?.toLowerCase() === 'admin'}
+                        className={`w-9 h-9 rounded-full inline-flex items-center justify-center shrink-0 transition-colors ${u.role?.toLowerCase() === 'admin' ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700'}`} 
+                        title={u.role?.toLowerCase() === 'admin' ? "Admins cannot be deleted" : "Delete"}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
                     </div>
                   </td>
                 </tr>
