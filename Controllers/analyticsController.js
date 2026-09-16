@@ -3,6 +3,7 @@ const Room = require('../Model/Room');
 const Billing = require('../Model/Billing');
 const ServiceRequest = require('../Model/ServiceRequest');
 const User = require('../Model/User');
+const Maintenance = require('../Model/Maintenance');
 
 exports.getDashboardAnalytics = async (req, res) => {
     try {
@@ -32,8 +33,8 @@ exports.getDashboardAnalytics = async (req, res) => {
 
         const roomsToClean = await Room.countDocuments({ cleaningStatus: { $in: ['Dirty', 'Cleaning'] } });
         
-        // Handle potential case-insensitivity of status
-        const maintenanceRooms = await Room.countDocuments({ status: { $regex: /^maintenance$/i } });
+        // Count pending maintenance tasks instead of rooms in maintenance
+        const maintenanceRooms = await Maintenance.countDocuments({ status: 'Pending' });
 
         const totalGuests = await User.countDocuments({ role: 'guest' });
 
