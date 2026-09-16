@@ -5,22 +5,20 @@ const AboutUs = () => {
   return (
     <div className="bg-gray-50 mb-16">
       {/* 1. HERO / PAGE HEADER */}
-      <div 
-        className="relative bg-gray-900 text-white min-h-[50vh] flex items-center justify-center px-4"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundBlendMode: 'overlay'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div className="container mx-auto text-center relative z-10 flex flex-col items-center mt-10">
-          <p className="text-blue-500 font-sans tracking-[0.3em] uppercase text-sm mb-4 font-semibold">Our Story</p>
-          <h1 className="text-4xl md:text-6xl font-serif font-normal mb-4 tracking-tight drop-shadow-lg text-white">
+      <div className="relative bg-gray-900 text-white py-24 flex items-center justify-center text-center px-4 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" 
+            alt="About LuxuryStay" 
+            className="w-full h-full object-cover opacity-30 transform scale-105 hover:scale-100 transition-transform duration-1000"
+          />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <p className="text-[#d4af37] font-sans tracking-[0.3em] uppercase text-sm mb-4 font-bold">Our Story</p>
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
             About LuxuryStay
           </h1>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto font-light drop-shadow-md text-gray-200">
+          <p className="text-xl text-gray-300 font-light leading-relaxed">
             Providing comfort, classic elegance, and memorable experiences for every guest.
           </p>
         </div>
