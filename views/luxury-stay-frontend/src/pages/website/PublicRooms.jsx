@@ -307,62 +307,60 @@ const PublicRooms = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-20 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="container mx-auto px-4 py-16 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {rooms.map((room) => (
-            <div key={room._id} className="flex flex-col bg-white overflow-hidden group hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all duration-500 border border-gray-100">
+            <div key={room._id} className="flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 p-4 rounded-3xl gap-4">
               
-              {/* Image Section */}
-              <div className="w-full h-[320px] relative overflow-hidden bg-gray-100">
+              {/* Image Section (Rounded) */}
+              <div className="w-full h-60 relative rounded-2xl overflow-hidden bg-gray-100">
                 {room.images && room.images.length > 0 ? (
-                  <img src={room.images[0]} alt={`Room ${room.roomNumber}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                  <img src={room.images[0]} alt={`Room ${room.roomNumber}`} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400 font-light">No Image Available</div>
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 font-light text-sm">No Image</div>
                 )}
-                
-                {/* Elegant Top Badge */}
-                <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-4 py-2 text-[10px] font-bold tracking-[0.2em] uppercase text-[#1b3658] shadow-sm">
-                  {room.type}
-                </div>
               </div>
 
-              {/* Content Section */}
-              <div className="p-8 flex flex-col flex-grow">
-                {/* Title & Price Header */}
-                <div className="flex justify-between items-end mb-5 border-b border-gray-100 pb-5">
-                  <h3 className="text-2xl font-serif text-[#1b3658] group-hover:text-[#d4af37] transition-colors duration-300">
-                    Room {room.roomNumber}
-                  </h3>
-                  <div className="text-right">
-                    <span className="text-[9px] text-gray-400 block uppercase tracking-[0.1em] mb-1">Starting from</span>
-                    <span className="text-xl font-bold text-[#d4af37]">${room.pricePerNight}</span>
-                  </div>
-                </div>
-                
-                {/* Description */}
-                <p className="text-gray-500 text-sm font-light leading-relaxed mb-6 line-clamp-3">
-                  {room.description || 'Experience unparalleled comfort in this exquisitely designed room, offering premium amenities and a serene atmosphere tailored for a perfect stay.'}
-                </p>
-                
-                {/* Minimalist Features */}
-                <div className="flex flex-wrap gap-4 mb-8 text-[11px] text-gray-500 font-medium tracking-[0.1em] uppercase">
-                  <span className="flex items-center gap-2">
-                    <FontAwesomeIcon icon={faCheckCircle} className="text-[#d4af37] text-xs" /> 
+              <div className="flex flex-col flex-grow gap-2 px-1">
+                {/* Top Labels (Type & Capacity) */}
+                <div className="flex justify-between items-center text-sm font-medium text-gray-800">
+                  <span className="flex items-center gap-1.5 font-bold text-[#1b3658]">
+                    <span className="text-[#d4af37]">★</span> {room.type}
+                  </span>
+                  <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md text-xs font-semibold">
                     {room.capacity} Guests
                   </span>
-                  {room.features && room.features.slice(0, 2).map((f, i) => (
-                    <span key={i} className="flex items-center gap-2">
-                      <FontAwesomeIcon icon={faCheckCircle} className="text-[#d4af37] text-xs" /> 
+                </div>
+
+                {/* Title */}
+                <h3 className="text-xl font-bold text-gray-900 mt-1">
+                  Room {room.roomNumber}
+                </h3>
+                
+                {/* Subtitle / Description */}
+                <p className="text-gray-500 text-sm truncate">
+                  {room.description || 'Premium room with luxury amenities.'}
+                </p>
+
+                {/* Amenities Grid (2x2) */}
+                <div className="grid grid-cols-2 gap-y-3 gap-x-4 mt-3 mb-4 text-sm text-gray-700 font-medium">
+                  {room.features && room.features.slice(0, 4).map((f, i) => (
+                    <span key={i} className="flex items-center gap-2 truncate">
+                      <FontAwesomeIcon icon={faCheckCircle} className="text-gray-400 text-xs" /> 
                       {f}
                     </span>
                   ))}
                 </div>
-                
-                {/* Sleek Button */}
-                <div className="mt-auto">
+
+                {/* Bottom: Price and Reserve Button */}
+                <div className="flex justify-between items-center mt-auto pt-4">
+                  <div>
+                    <span className="text-2xl font-bold text-gray-900">${room.pricePerNight}</span>
+                    <span className="text-gray-500 text-sm font-medium"> / night</span>
+                  </div>
                   <button 
                     onClick={() => handleBookClick(room)}
-                    className="w-full bg-[#f8f9fa] border border-gray-200 text-[#1b3658] hover:bg-[#1b3658] hover:text-white hover:border-[#1b3658] font-bold uppercase tracking-[0.2em] text-[10px] py-4 transition-all duration-300"
+                    className="bg-[#1b3658] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#122640] transition shadow-md"
                   >
                     Reserve Now
                   </button>
