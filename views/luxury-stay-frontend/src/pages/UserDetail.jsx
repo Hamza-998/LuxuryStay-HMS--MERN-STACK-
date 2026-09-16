@@ -61,13 +61,6 @@ const UserDetail = () => {
             <div className="flex-1 pb-2">
               <h2 className="text-3xl font-black text-[#1b3658] tracking-tight flex items-center gap-3">
                 {user.fullName}
-                {user.role === 'admin' && (
-                  <span className={`px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-wide shadow-sm border ${
-                    user.status === 'Active' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'
-                  }`}>
-                    {user.status || 'Active'}
-                  </span>
-                )}
               </h2>
               <p className="text-[#d4af37] font-bold uppercase tracking-widest text-sm mt-1">{user.role || 'guest'}</p>
             </div>
