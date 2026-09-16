@@ -31,7 +31,15 @@ const ServiceRequests = () => {
         api.get('/services'),
         api.get('/staff')
       ]);
-      setRequests(reqRes.data);
+      
+      let fetchedRequests = reqRes.data;
+      if (!isAdmin) {
+        fetchedRequests = fetchedRequests.filter(
+          req => req.assignedTo?._id === user._id || req.assignedTo === user._id
+        );
+      }
+      
+      setRequests(fetchedRequests);
       setStaff(staffRes.data);
     } catch (error) {
       toast.error('Failed to fetch data');
