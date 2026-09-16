@@ -307,58 +307,78 @@ const PublicRooms = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-20 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {rooms.map((room) => (
-            <div key={room._id} className="flex flex-col bg-white shadow-xl hover:shadow-2xl overflow-hidden group hover:-translate-y-2 transition-all duration-500 rounded-2xl relative border border-gray-100">
-              <div className="w-full h-56 relative overflow-hidden bg-gray-200">
+            <div key={room._id} className="flex flex-col bg-white shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] overflow-hidden group hover:-translate-y-2 transition-all duration-500 rounded-none relative border border-gray-100">
+              {/* Image Section */}
+              <div className="w-full h-72 relative overflow-hidden bg-gray-900">
                 {room.images && room.images.length > 0 ? (
-                  <img src={room.images[0]} alt={`Room ${room.roomNumber}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                  <img src={room.images[0]} alt={`Room ${room.roomNumber}`} className="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-90 transition-all duration-700 ease-in-out" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
+                  <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-100">No Image Available</div>
                 )}
-                <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase text-[#d4af37] shadow-sm rounded-full">
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80"></div>
+                
+                {/* Top Badge */}
+                <div className="absolute top-5 left-5 bg-[#d4af37] text-white px-4 py-1.5 text-xs font-bold tracking-widest uppercase shadow-md">
                   {room.type}
                 </div>
-              </div>
-              <div className="w-full p-6 flex flex-col flex-grow justify-between text-left">
-                <div>
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-serif text-gray-900 font-bold">Room {room.roomNumber}</h3>
-                    <div className="text-right">
-                      <span className="text-xl font-bold text-[#d4af37]">${room.pricePerNight}</span>
-                      <span className="text-[10px] text-gray-500 block uppercase tracking-widest mt-0.5">/ Night</span>
-                    </div>
+                
+                {/* Bottom Price in Image */}
+                <div className="absolute bottom-5 left-5 text-white">
+                  <div className="text-sm font-medium tracking-widest uppercase text-gray-300 mb-1">Starting from</div>
+                  <div className="text-3xl font-serif font-bold text-[#d4af37] flex items-baseline gap-1">
+                    ${room.pricePerNight} <span className="text-sm font-normal text-white uppercase tracking-widest">/ Night</span>
                   </div>
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="w-full p-8 flex flex-col flex-grow justify-between text-left relative">
+                <div>
+                  <h3 className="text-2xl font-serif text-[#1b3658] font-bold mb-4 group-hover:text-[#d4af37] transition-colors duration-300">
+                    Room {room.roomNumber}
+                  </h3>
+                  
                   <p className="text-gray-500 text-sm font-light leading-relaxed mb-6 line-clamp-3">
                     {room.description || 'Experience unparalleled comfort in this exquisitely designed room, offering premium amenities and a serene atmosphere tailored for a perfect stay.'}
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {room.features && room.features.slice(0, 3).map((f, i) => (
-                      <span key={i} className="text-[10px] bg-gray-50 px-2.5 py-1 rounded-md text-gray-600 font-medium border border-gray-100">
+                  
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    <span className="text-xs bg-[#f8f9fa] text-[#1b3658] px-3 py-1.5 border border-gray-200 font-medium tracking-wide">
+                      <FontAwesomeIcon icon={faCheckCircle} className="text-[#d4af37] mr-1.5" /> 
+                      {room.capacity} Guests
+                    </span>
+                    {room.features && room.features.slice(0, 2).map((f, i) => (
+                      <span key={i} className="text-xs bg-[#f8f9fa] text-[#1b3658] px-3 py-1.5 border border-gray-200 font-medium tracking-wide">
+                        <FontAwesomeIcon icon={faCheckCircle} className="text-[#d4af37] mr-1.5" /> 
                         {f}
                       </span>
                     ))}
-                    <span className="text-[10px] bg-gray-50 px-2.5 py-1 rounded-md text-gray-600 font-medium border border-gray-100">
-                      {room.capacity} Guests
-                    </span>
                   </div>
                 </div>
-                <div className="mt-auto pt-2">
+                
+                <div className="mt-auto relative z-10">
                   <button 
                     onClick={() => handleBookClick(room)}
-                    className="w-full bg-[#1b3658] hover:bg-[#122640] text-white font-bold uppercase tracking-widest text-xs py-3.5 px-6 transition duration-300 rounded-xl shadow-md hover:shadow-lg"
+                    className="w-full bg-transparent border-2 border-[#1b3658] text-[#1b3658] hover:bg-[#1b3658] hover:text-white font-bold uppercase tracking-widest text-xs py-4 px-6 transition duration-300 flex items-center justify-center gap-2 group-hover:border-[#d4af37] group-hover:bg-[#d4af37] group-hover:text-white"
                   >
-                    Reserve Now
+                    Reserve Now 
                   </button>
                 </div>
               </div>
+              
+              {/* Decorative Accent Line on Hover */}
+              <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#d4af37] group-hover:w-full transition-all duration-500"></div>
             </div>
           ))}
         </div>
         {rooms.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            No rooms available at the moment.
+          <div className="text-center py-24">
+            <h2 className="text-2xl font-serif text-gray-500 mb-2">No Rooms Available</h2>
+            <p className="text-gray-400">Please check back later for availability.</p>
           </div>
         )}
       </div>
