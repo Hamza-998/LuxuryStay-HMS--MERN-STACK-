@@ -15,7 +15,7 @@ const Users = () => {
   
   const [formData, setFormData] = useState({
     fullName: '', email: '', contactNumber: '', cnic: '', 
-    nationality: '', city: '', address: '', role: 'guest', status: 'Active'
+    nationality: '', city: '', address: '', role: 'guest'
   });
   const [imageFile, setImageFile] = useState(null);
 
@@ -38,8 +38,7 @@ const Users = () => {
       nationality: user.nationality || '',
       city: user.city || '', 
       address: user.address || '', 
-      role: user.role || 'guest', 
-      status: user.status || 'Active'
+      role: user.role || 'guest'
     });
     setImageFile(null);
     setIsModalOpen(true);
@@ -221,13 +220,6 @@ const Users = () => {
               <select className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" required value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
                 <option value="guest">Guest</option>
                 <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Status *</label>
-              <select className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" required value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
               </select>
             </div>
           </div>

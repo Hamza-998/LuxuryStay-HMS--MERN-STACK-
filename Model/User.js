@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema({
         type: String, 
         default: 'guest' 
     },
-    status: { type: String, enum: ['Active', 'Inactive'], default: 'Active' },
     image: String, // From Cloudinary
 }, { timestamps: true });
 
