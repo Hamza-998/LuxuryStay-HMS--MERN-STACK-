@@ -113,6 +113,38 @@ exports.updateReservation = async (req, res) => {
         const reservation = await Reservation.findById(req.params.id);
         if (!reservation) return res.status(404).json({ message: 'Reservation not found' });
 
+        // --- BILLING LOGIC: Cancel Before 24h & Early Checkout ---
+        if (req.body.status === 'cancelled' && reservation.status !== 'cancelled') {
+            const checkInDate = new Date(reservation.checkInDate);
+            const now = new Date();
+            const hoursUntilCheckin = (checkInDate - now) / (1000 * 60 * 60);
+
+            if (hoursUntilCheckin >= 24) {
+                // Cancel Before 24h: Full Refund
+                req.body.totalAmount = 0; 
+            }
+        }
+
+        if (req.body.status === 'early-checkout' && reservation.status !== 'early-checkout') {
+            // Early Checkout: Charge for stayed nights + Refund remaining
+            const checkInDate = new Date(reservation.checkInDate);
+            const origCheckOutDate = new Date(reservation.checkOutDate);
+            const now = new Date();
+
+            let origNights = Math.ceil(Math.abs(origCheckOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+            if (origNights < 1) origNights = 1;
+
+            let stayedNights = Math.ceil(Math.abs(now - checkInDate) / (1000 * 60 * 60 * 24));
+            if (stayedNights < 1) stayedNights = 1; // Min 1 night charge
+
+            if (stayedNights < origNights) {
+                const dailyRate = reservation.totalAmount / origNights;
+                req.body.totalAmount = dailyRate * stayedNights;
+                req.body.checkOutDate = now; // update to today
+            }
+        }
+        // --------------------------------------------------------
+
         // Update fields
         Object.keys(req.body).forEach(key => {
             reservation[key] = req.body[key];
