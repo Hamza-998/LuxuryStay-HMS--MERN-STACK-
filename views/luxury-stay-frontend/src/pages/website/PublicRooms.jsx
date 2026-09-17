@@ -360,7 +360,7 @@ const PublicRooms = () => {
                   </div>
                   <button 
                     onClick={() => handleBookClick(room)}
-                    className="bg-[#1b3658] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#122640] transition shadow-md"
+                    className="bg-[#1b3658] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#122640] transition shadow-md cursor-pointer"
                   >
                     Reserve Now
                   </button>
