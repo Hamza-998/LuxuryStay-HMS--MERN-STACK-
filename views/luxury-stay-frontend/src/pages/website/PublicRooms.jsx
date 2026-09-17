@@ -107,7 +107,7 @@ const PublicRooms = () => {
   if (selectedRoom) {
     const totals = getTotals();
     return (
-      <div className="bg-gray-50 min-h-screen pb-16 font-sans">
+      <div className="bg-gray-50 min-h-screen pb-16 font-sans animate-fade-in-up">
         {/* Hero Banner for Checkout */}
         <div className="relative bg-[#0f172a] text-white py-16 flex items-center justify-center text-center">
             <div className="absolute inset-0 z-0">
