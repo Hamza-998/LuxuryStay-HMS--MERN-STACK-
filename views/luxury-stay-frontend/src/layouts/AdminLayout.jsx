@@ -186,7 +186,9 @@ const AdminLayout = () => {
         );
       }
 
-      const isActive = location.pathname === link.path || location.pathname.startsWith(link.path + '/');
+      const isActive = link.path === '/admin' 
+        ? location.pathname === '/admin'
+        : (location.pathname === link.path || location.pathname.startsWith(link.path + '/'));
       return (
         <Link 
           key={link.path} 
