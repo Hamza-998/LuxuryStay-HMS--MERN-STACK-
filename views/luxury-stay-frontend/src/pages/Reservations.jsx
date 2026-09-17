@@ -181,6 +181,38 @@ const Reservations = () => {
     } catch (err) { toast.error('Failed to add payment'); }
   };
 
+  const getAvailableRooms = () => {
+    return rooms.filter(room => {
+      // If it's a physical maintenance, don't show it unless we're editing a res that somehow has it
+      if (room.status === 'maintenance' && !(editingRes && formData.roomId === room._id)) return false;
+
+      // If dates aren't fully selected yet, just return the ones not in maintenance
+      if (!formData.checkInDate || !formData.checkOutDate) return true;
+
+      const newStart = new Date(formData.checkInDate);
+      newStart.setHours(0,0,0,0);
+      const newEnd = new Date(formData.checkOutDate);
+      newEnd.setHours(0,0,0,0);
+
+      const isBooked = reservations.some(res => {
+        if (editingRes && res._id === editingRes._id) return false;
+        if (res.status === 'cancelled' || res.status === 'checked-out') return false;
+        
+        const resRoomId = res.roomId?._id || res.roomId;
+        if (resRoomId !== room._id) return false;
+
+        const resStart = new Date(res.checkInDate);
+        resStart.setHours(0,0,0,0);
+        const resEnd = new Date(res.checkOutDate);
+        resEnd.setHours(0,0,0,0);
+        
+        return newStart < resEnd && newEnd > resStart;
+      });
+
+      return !isBooked;
+    });
+  };
+
   return (
     <div className="animate-fade-in-up">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -318,7 +350,7 @@ const Reservations = () => {
             <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Room *</label>
             <select required className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.roomId} onChange={e => setFormData({...formData, roomId: e.target.value})}>
               <option value="">Select Room</option>
-              {rooms.filter(r => r.status === 'available' || (editingRes && formData.roomId === r._id)).map(r => <option key={r._id} value={r._id}>Room {r.roomNumber} - {r.type} (${r.pricePerNight}/night)</option>)}
+              {getAvailableRooms().map(r => <option key={r._id} value={r._id}>Room {r.roomNumber} - {r.type} (${r.pricePerNight}/night)</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-5">

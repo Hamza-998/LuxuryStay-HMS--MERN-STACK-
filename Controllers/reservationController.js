@@ -57,6 +57,22 @@ exports.createReservation = async (req, res) => {
 
         if (!finalGuestId) return res.status(400).json({ message: "Guest details or guestId required." });
 
+        const reqCheckIn = new Date(checkInDate);
+        reqCheckIn.setHours(0,0,0,0);
+        const reqCheckOut = new Date(checkOutDate);
+        reqCheckOut.setHours(0,0,0,0);
+
+        const overlappingBooking = await Reservation.findOne({
+            roomId: roomId,
+            status: { $in: ['confirmed', 'checked-in'] },
+            checkInDate: { $lt: reqCheckOut },
+            checkOutDate: { $gt: reqCheckIn }
+        });
+
+        if (overlappingBooking) {
+            return res.status(400).json({ message: 'Room is already booked for the selected dates.' });
+        }
+
         let payments = [];
         if (initialPaymentAmount && Number(initialPaymentAmount) > 0) {
             payments.push({
@@ -153,6 +169,27 @@ exports.updateReservation = async (req, res) => {
             }
         }
         // --------------------------------------------------------
+
+        const reqRoomId = req.body.roomId || reservation.roomId;
+        const reqCheckIn = new Date(req.body.checkInDate || reservation.checkInDate);
+        reqCheckIn.setHours(0,0,0,0);
+        const reqCheckOut = new Date(req.body.checkOutDate || reservation.checkOutDate);
+        reqCheckOut.setHours(0,0,0,0);
+        const reqStatus = req.body.status || reservation.status;
+
+        if (['confirmed', 'checked-in'].includes(reqStatus)) {
+            const overlappingBooking = await Reservation.findOne({
+                _id: { $ne: reservation._id },
+                roomId: reqRoomId,
+                status: { $in: ['confirmed', 'checked-in'] },
+                checkInDate: { $lt: reqCheckOut },
+                checkOutDate: { $gt: reqCheckIn }
+            });
+
+            if (overlappingBooking) {
+                return res.status(400).json({ message: 'Room is already booked for the selected dates.' });
+            }
+        }
 
         // Update fields
         Object.keys(req.body).forEach(key => {

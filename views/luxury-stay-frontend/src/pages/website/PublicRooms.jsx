@@ -98,7 +98,7 @@ const PublicRooms = () => {
       setSelectedRoom(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
-      toast.error('Booking failed');
+      toast.error(err.response?.data?.message || 'Booking failed');
     } finally {
       setIsSubmitting(false);
     }
