@@ -154,19 +154,19 @@ const PublicRooms = () => {
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label className="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wider">Full Name *</label>
-                            <input required type="text" minLength="3" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.fullName} onChange={e => setBookingData({...bookingData, fullName: e.target.value})} />
+                            <input required type="text" pattern="[A-Za-z\s]+" minLength="3" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.fullName} onChange={e => setBookingData({...bookingData, fullName: e.target.value})} title="Only letters and spaces are allowed" />
                           </div>
                           <div>
                             <label className="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wider">Email *</label>
-                            <input required type="email" readOnly className="w-full border-gray-200 border p-4 bg-gray-100 text-gray-500 cursor-not-allowed outline-none rounded-none" value={bookingData.email} />
+                            <input required type="email" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.email} onChange={e => setBookingData({...bookingData, email: e.target.value})} />
                           </div>
                           <div>
                             <label className="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wider">Contact Number *</label>
-                            <input required type="text" pattern="[0-9]{11}" placeholder="e.g. 03001234567" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.contactNumber} onChange={e => setBookingData({...bookingData, contactNumber: e.target.value})} />
+                            <input required type="text" pattern="^(?!0+$)[0-9]{11}$" placeholder="e.g. 03001234567" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.contactNumber} onChange={e => setBookingData({...bookingData, contactNumber: e.target.value})} title="Must be exactly 11 digits and cannot be all zeros" />
                           </div>
                           <div>
                             <label className="block text-gray-700 font-medium mb-2 text-sm uppercase tracking-wider">CNIC / ID *</label>
-                            <input required type="text" pattern="[0-9]{13}" placeholder="e.g. 4210112345678" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.cnic} onChange={e => setBookingData({...bookingData, cnic: e.target.value})} />
+                            <input required type="text" pattern="^(?!0+$)[0-9]{13}$" placeholder="e.g. 4210112345678" className="w-full border-gray-200 border p-4 bg-gray-50 focus:ring-2 focus:ring-[#d4af37] outline-none transition-all rounded-none" value={bookingData.cnic} onChange={e => setBookingData({...bookingData, cnic: e.target.value})} title="Must be exactly 13 digits and cannot be all zeros" />
                           </div>
                        </div>
                    </div>
