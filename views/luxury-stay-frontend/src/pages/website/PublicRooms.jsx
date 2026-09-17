@@ -38,7 +38,7 @@ const PublicRooms = () => {
         }
         
         const { data } = await api.get('/rooms');
-        setRooms(data.filter(r => r.status === 'available'));
+        setRooms(data.filter(r => r.status !== 'maintenance'));
       } catch (err) {
         toast.error('Failed to load rooms'); 
       }
