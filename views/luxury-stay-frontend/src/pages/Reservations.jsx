@@ -285,7 +285,7 @@ const Reservations = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Full Name *</label>
-              <input required type="text" minLength="3" title="Name must be at least 3 characters" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} />
+              <input required type="text" pattern="^[A-Za-z\s]+$" minLength="3" title="Name must only contain letters and spaces, no dots or numbers" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} />
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Email *</label>
@@ -293,19 +293,19 @@ const Reservations = () => {
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Contact Number *</label>
-              <input required type="text" pattern="[0-9]{11}" title="Contact number must be exactly 11 digits" placeholder="e.g. 03001234567" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.contactNumber} onChange={e => setFormData({...formData, contactNumber: e.target.value})} />
+              <input required type="text" pattern="^(?!0{11}$)[0-9]{11}$" title="Contact number must be exactly 11 digits and cannot be all zeros" placeholder="e.g. 03001234567" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.contactNumber} onChange={e => setFormData({...formData, contactNumber: e.target.value})} />
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">CNIC *</label>
-              <input required type="text" pattern="[0-9]{13}" title="CNIC must be exactly 13 digits without dashes" placeholder="e.g. 4210112345678" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.cnic} onChange={e => setFormData({...formData, cnic: e.target.value})} />
+              <input required type="text" pattern="^(?!0{13}$)[0-9]{13}$" title="CNIC must be exactly 13 digits without dashes and cannot be all zeros" placeholder="e.g. 4210112345678" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.cnic} onChange={e => setFormData({...formData, cnic: e.target.value})} />
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Nationality</label>
-              <input type="text" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.nationality} onChange={e => setFormData({...formData, nationality: e.target.value})} />
+              <input type="text" pattern="^[A-Za-z\s]+$" title="Nationality must only contain letters" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.nationality} onChange={e => setFormData({...formData, nationality: e.target.value})} />
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">City</label>
-              <input type="text" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
+              <input type="text" pattern="^[A-Za-z\s]+$" title="City must only contain letters" className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Address</label>
@@ -318,7 +318,7 @@ const Reservations = () => {
             <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wide">Room *</label>
             <select required className="w-full bg-gray-50 border border-gray-200 text-gray-900 p-3 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" value={formData.roomId} onChange={e => setFormData({...formData, roomId: e.target.value})}>
               <option value="">Select Room</option>
-              {rooms.map(r => <option key={r._id} value={r._id}>Room {r.roomNumber} - {r.type} (${r.pricePerNight}/night)</option>)}
+              {rooms.filter(r => r.status === 'available' || (editingRes && formData.roomId === r._id)).map(r => <option key={r._id} value={r._id}>Room {r.roomNumber} - {r.type} (${r.pricePerNight}/night)</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-5">

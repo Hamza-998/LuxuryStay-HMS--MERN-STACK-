@@ -52,8 +52,8 @@ const PublicRooms = () => {
       navigate('/login');
       return;
     }
-    if (user.role !== 'guest') {
-      toast.error('Staff cannot book rooms from the public portal');
+    if (user.role !== 'guest' && user.role !== 'admin') {
+      toast.error('Only Guests and Admins can book rooms from the public portal');
       return;
     }
     setSelectedRoom(room);
