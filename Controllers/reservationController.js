@@ -70,7 +70,9 @@ exports.createReservation = async (req, res) => {
         });
 
         if (overlappingBooking) {
-            return res.status(400).json({ message: 'Room is already booked for the selected dates.' });
+            const overlapStart = new Date(overlappingBooking.checkInDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            const overlapEnd = new Date(overlappingBooking.checkOutDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            return res.status(400).json({ message: `Room is already booked from ${overlapStart} to ${overlapEnd}. Please select different dates.` });
         }
 
         let payments = [];
@@ -187,7 +189,9 @@ exports.updateReservation = async (req, res) => {
             });
 
             if (overlappingBooking) {
-                return res.status(400).json({ message: 'Room is already booked for the selected dates.' });
+                const overlapStart = new Date(overlappingBooking.checkInDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                const overlapEnd = new Date(overlappingBooking.checkOutDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                return res.status(400).json({ message: `Room is already booked from ${overlapStart} to ${overlapEnd}. Please select different dates.` });
             }
         }
 
