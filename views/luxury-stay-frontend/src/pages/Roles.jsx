@@ -33,9 +33,13 @@ const PERMISSION_GROUPS = [
     permissions: [{ id: 'manage_billing', label: 'Manage Billings', desc: 'Can view invoices, payments, and financial records' }]
   },
   {
-    group: 'Maintenance',
+    group: 'Operations',
     icon: faBroom,
-    permissions: [{ id: 'manage_maintenance', label: 'Maintenance & Services', desc: 'Access to Maintenance tasks and Guest Services pages' }]
+    permissions: [
+      { id: 'manage_housekeeping', label: 'Housekeeping', desc: 'Can manage room cleaning status' },
+      { id: 'manage_maintenance', label: 'Maintenance', desc: 'Can manage repair tasks' },
+      { id: 'manage_services', label: 'Guest Services', desc: 'Can manage guest service requests' }
+    ]
   },
   {
     group: 'Guests Data',

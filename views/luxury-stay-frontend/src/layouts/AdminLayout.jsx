@@ -43,13 +43,13 @@ const AdminLayout = () => {
         
         if (parsed.role.toLowerCase() === 'admin') {
           // Admin gets everything
-          setPermissions(['view_dashboard', 'manage_reservations', 'manage_rooms', 'manage_guests', 'manage_staff', 'manage_billing', 'manage_maintenance', 'manage_settings', 'manage_roles']);
+          setPermissions(['view_dashboard', 'manage_reservations', 'manage_rooms', 'manage_guests', 'manage_staff', 'manage_billing', 'manage_maintenance', 'manage_housekeeping', 'manage_services', 'manage_settings', 'manage_roles']);
         } else if (myRole && myRole.permissions) {
           setPermissions(myRole.permissions);
         } else {
           // Fallback basic permissions based on old hardcoded logic
           const isMaint = ['housekeeping', 'maintenance', 'cleaner', 'sweeper'].includes(parsed.role.toLowerCase());
-          setPermissions(isMaint ? ['manage_maintenance'] : ['view_dashboard', 'manage_reservations', 'manage_rooms', 'manage_billing', 'manage_maintenance', 'manage_guests']);
+          setPermissions(isMaint ? ['manage_maintenance', 'manage_housekeeping', 'manage_services'] : ['view_dashboard', 'manage_reservations', 'manage_rooms', 'manage_billing', 'manage_maintenance', 'manage_housekeeping', 'manage_services', 'manage_guests']);
         }
       } catch (error) {
         console.error('Failed to load permissions');
@@ -69,6 +69,8 @@ const AdminLayout = () => {
       // Auto-redirect if they land on /admin but lack dashboard view
       if (path === '/admin' && !permissions.includes('view_dashboard')) {
         if (permissions.includes('manage_maintenance')) navigate('/admin/maintenance');
+        else if (permissions.includes('manage_housekeeping')) navigate('/admin/housekeeping');
+        else if (permissions.includes('manage_services')) navigate('/admin/services');
         else if (permissions.includes('manage_reservations')) navigate('/admin/reservations');
       }
     }
@@ -103,14 +105,14 @@ const AdminLayout = () => {
     hasPerm('manage_rooms') && { name: 'Rooms', path: '/admin/rooms', icon: faBed },
     hasPerm('manage_reservations') && { name: 'Reservations', path: '/admin/reservations', icon: faClipboardList },
     hasPerm('manage_billing') && { name: 'Billings', path: '/admin/billings', icon: faMoneyBillWave },
-    hasPerm('manage_maintenance') && { 
+    (hasPerm('manage_maintenance') || hasPerm('manage_housekeeping') || hasPerm('manage_services')) && { 
       name: 'Operations', 
       icon: faBroom, 
       subLinks: [
-        { name: 'Housekeeping', path: '/admin/housekeeping' },
-        { name: 'Maintenance', path: '/admin/maintenance' },
-        { name: 'Guest Services', path: '/admin/services' }
-      ]
+        hasPerm('manage_housekeeping') && { name: 'Housekeeping', path: '/admin/housekeeping' },
+        hasPerm('manage_maintenance') && { name: 'Maintenance', path: '/admin/maintenance' },
+        hasPerm('manage_services') && { name: 'Guest Services', path: '/admin/services' }
+      ].filter(Boolean)
     },
     hasPerm('manage_guests') && { name: 'Messages', path: '/admin/messages', icon: faEnvelope },
     hasPerm('manage_guests') && { name: 'Feedbacks', path: '/admin/feedbacks', icon: faCommentDots },
