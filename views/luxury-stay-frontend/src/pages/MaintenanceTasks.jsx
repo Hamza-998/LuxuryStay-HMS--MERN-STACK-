@@ -130,6 +130,17 @@ const MaintenanceTasks = () => {
     }
   };
 
+  const handlePriorityChange = async (id, newPriority) => {
+    try {
+      setTasks(tasks.map(t => t._id === id ? { ...t, priority: newPriority } : t));
+      await api.put(`/maintenance/${id}`, { priority: newPriority });
+      toast.success('Priority updated successfully');
+    } catch (error) {
+      toast.error('Failed to update priority');
+      fetchData();
+    }
+  };
+
   const getStatusColor = (status) => {
     switch(status) {
       case 'Pending': return 'bg-yellow-100 text-yellow-800';
@@ -188,7 +199,20 @@ const MaintenanceTasks = () => {
                     <td className="p-4 font-bold text-gray-900">{task.roomId?.roomNumber || 'N/A'}</td>
                     <td className="p-4 font-medium text-gray-700">{task.issueType}</td>
                     <td className="p-4 text-gray-600 text-sm max-w-xs truncate">{task.description}</td>
-                    <td className={`p-4 ${getPriorityColor(task.priority)}`}>{task.priority}</td>
+                    <td className="p-4">
+                      <select 
+                        value={task.priority} 
+                        onChange={(e) => handlePriorityChange(task._id, e.target.value)}
+                        disabled={isMaintenanceStaff}
+                        className={`px-3 py-1 rounded-full text-xs font-bold cursor-pointer outline-none appearance-none bg-white border border-transparent hover:border-gray-300 focus:ring-2 focus:ring-blue-500/50 pr-7 ${getPriorityColor(task.priority)}`}
+                        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%236b7280\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundPosition: 'right 0.3rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1em 1em' }}
+                      >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Urgent">Urgent</option>
+                      </select>
+                    </td>
                     {!isMaintenanceStaff && <td className="p-4 font-medium text-gray-700">{task.assignedTo?.fullName || 'Unassigned'}</td>}
                     <td className="p-4">
                       <select 

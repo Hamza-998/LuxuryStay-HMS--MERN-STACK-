@@ -54,11 +54,15 @@ exports.getStaffTasks = async (req, res) => {
 
 exports.updateMaintenanceStatus = async (req, res) => {
     try {
-        const { status, assignedTo } = req.body;
+        const { status, assignedTo, priority, issueType, description, roomId } = req.body;
         const updateData = {};
         
         if (status) updateData.status = status;
         if (assignedTo) updateData.assignedTo = assignedTo;
+        if (priority) updateData.priority = priority;
+        if (issueType) updateData.issueType = issueType;
+        if (description) updateData.description = description;
+        if (roomId) updateData.roomId = roomId;
 
         if (status === 'Resolved') {
             updateData.resolvedAt = new Date();
