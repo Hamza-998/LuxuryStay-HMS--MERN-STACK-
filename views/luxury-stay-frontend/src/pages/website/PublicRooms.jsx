@@ -15,6 +15,7 @@ const PublicRooms = () => {
   const [user, setUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  const [isLoading, setIsLoading] = useState(true);
   const [bookingData, setBookingData] = useState({ 
     checkInDate: '', checkOutDate: '',
     fullName: '', email: '', contactNumber: '', cnic: '',
@@ -50,6 +51,8 @@ const PublicRooms = () => {
         setRooms(data.filter(r => r.status !== 'maintenance'));
       } catch (err) {
         toast.error('Failed to load rooms'); 
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchRoomsAndUser();
@@ -317,73 +320,101 @@ const PublicRooms = () => {
       </div>
 
       <div className="container mx-auto px-4 py-16 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {rooms.map((room) => (
-            <div key={room._id} className="flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 p-4 rounded-3xl gap-4">
-              
-              {/* Image Section (Rounded) */}
-              <div className="w-full h-60 relative rounded-2xl overflow-hidden bg-gray-100">
-                {room.images && room.images.length > 0 ? (
-                  <img src={room.images[0]} alt={`Room ${room.roomNumber}`} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400 font-light text-sm">No Image</div>
-                )}
-              </div>
-
-              <div className="flex flex-col flex-grow gap-2 px-1">
-                {/* Top Labels (Type & Capacity) */}
-                <div className="flex justify-between items-center text-sm font-medium text-gray-800">
-                  <span className="flex items-center gap-1.5 font-bold text-[#1b3658]">
-                    <span className="text-[#d4af37]">★</span> {room.type}
-                  </span>
-                  <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md text-xs font-semibold">
-                    {room.capacity} Guests
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-gray-900 mt-1">
-                  Room {room.roomNumber}
-                </h3>
-                
-                {/* Subtitle / Description */}
-                <p className="text-gray-500 text-sm truncate">
-                  {room.description || 'Premium room with luxury amenities.'}
-                </p>
-
-                {/* Amenities Grid (2x2) */}
-                <div className="grid grid-cols-2 gap-y-3 gap-x-4 mt-3 mb-4 text-sm text-gray-700 font-medium">
-                  {room.features && room.features.slice(0, 4).map((f, i) => (
-                    <span key={i} className="flex items-center gap-2 truncate">
-                      <FontAwesomeIcon icon={faCheckCircle} className="text-gray-400 text-xs" /> 
-                      {f}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Bottom: Price and Reserve Button */}
-                <div className="flex justify-between items-center mt-auto pt-4">
-                  <div>
-                    <span className="text-2xl font-bold text-gray-900">${room.pricePerNight}</span>
-                    <span className="text-gray-500 text-sm font-medium"> / night</span>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className="flex flex-col bg-white border border-gray-100 p-4 rounded-3xl gap-4 animate-pulse shadow-sm">
+                  <div className="w-full h-60 bg-gray-200 rounded-2xl"></div>
+                  <div className="flex justify-between items-center px-1">
+                    <div className="w-1/3 h-5 bg-gray-200 rounded"></div>
+                    <div className="w-1/4 h-5 bg-gray-200 rounded"></div>
                   </div>
-                  <button 
-                    onClick={() => handleBookClick(room)}
-                    className="bg-[#1b3658] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#122640] transition shadow-md cursor-pointer"
-                  >
-                    Reserve Now
-                  </button>
+                  <div className="w-1/2 h-7 bg-gray-200 rounded px-1"></div>
+                  <div className="w-full h-4 bg-gray-200 rounded px-1 mt-1"></div>
+                  <div className="grid grid-cols-2 gap-4 mt-3 px-1">
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                  </div>
+                  <div className="flex justify-between items-center mt-auto pt-4 px-1 border-t border-gray-50">
+                    <div className="w-1/3 h-8 bg-gray-200 rounded"></div>
+                    <div className="w-1/3 h-10 bg-gray-200 rounded-full"></div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-        {rooms.length === 0 && (
-          <div className="text-center py-24">
-            <h2 className="text-2xl font-serif text-gray-500 mb-2">No Rooms Available</h2>
-            <p className="text-gray-400">Please check back later for availability.</p>
-          </div>
-        )}
+          ) : rooms.length === 0 ? (
+            <div className="text-center py-24">
+              <h2 className="text-2xl font-serif text-gray-500 mb-2">No Rooms Available</h2>
+              <p className="text-gray-400">Please check back later for availability.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {rooms.map((room) => (
+                <div key={room._id} className="flex flex-col bg-white border border-gray-100 hover:border-gray-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 p-4 rounded-3xl gap-4">
+                  
+                  {/* Image Section (Rounded) */}
+                  <div onClick={() => handleBookClick(room)} className="w-full h-60 relative rounded-2xl overflow-hidden bg-gray-100 cursor-pointer group">
+                    {room.images && room.images.length > 0 ? (
+                      <img src={room.images[0]} alt={`Room ${room.roomNumber}`} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400 font-light text-sm">No Image</div>
+                    )}
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 text-white font-bold tracking-widest uppercase bg-black bg-opacity-50 px-4 py-2 rounded-lg transform scale-95 group-hover:scale-100 transition-all duration-300">Book Room</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col flex-grow gap-2 px-1">
+                    {/* Top Labels (Type & Capacity) */}
+                    <div className="flex justify-between items-center text-sm font-medium text-gray-800">
+                      <span className="flex items-center gap-1.5 font-bold text-[#1b3658]">
+                        <span className="text-[#d4af37]">✧</span> {room.type}
+                      </span>
+                      <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md text-xs font-semibold">
+                        {room.capacity} Guests
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-gray-900 mt-1 cursor-pointer hover:text-[#d4af37] transition-colors" onClick={() => handleBookClick(room)}>
+                      Room {room.roomNumber}
+                    </h3>
+                    
+                    {/* Subtitle / Description */}
+                    <p className="text-gray-500 text-sm truncate">
+                      {room.description || 'Premium room with luxury amenities.'}
+                    </p>
+
+                    {/* Amenities Grid (2x2) */}
+                    <div className="grid grid-cols-2 gap-y-3 gap-x-4 mt-3 mb-4 text-sm text-gray-700 font-medium">
+                      {room.features && room.features.slice(0, 4).map((f, i) => (
+                        <span key={i} className="flex items-center gap-2 truncate">
+                          <FontAwesomeIcon icon={faCheckCircle} className="text-gray-400 text-xs" /> 
+                          {f}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Bottom: Price and Reserve Button */}
+                    <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-50">
+                      <div>
+                        <span className="text-2xl font-bold text-gray-900">${room.pricePerNight}</span>
+                        <span className="text-gray-500 text-sm font-medium"> / night</span>
+                      </div>
+                      <button 
+                        onClick={() => handleBookClick(room)}
+                        className="bg-[#1b3658] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#122640] transition shadow-md cursor-pointer"
+                      >
+                        Reserve Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
       </div>
     </div>
   );
