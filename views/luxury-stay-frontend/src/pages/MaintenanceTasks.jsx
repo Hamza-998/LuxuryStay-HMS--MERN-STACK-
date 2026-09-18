@@ -19,7 +19,8 @@ const MaintenanceTasks = () => {
     description: '',
     priority: 'Medium',
     status: 'Pending',
-    assignedTo: ''
+    assignedTo: '',
+    blockRoom: false
   });
 
   const [editingId, setEditingId] = useState(null);
@@ -63,7 +64,8 @@ const MaintenanceTasks = () => {
         description: task.description || '',
         priority: task.priority || 'Medium',
         status: task.status || 'Pending',
-        assignedTo: task.assignedTo?._id || ''
+        assignedTo: task.assignedTo?._id || '',
+        blockRoom: task.roomId?.status === 'maintenance'
       });
       setEditingId(task._id);
     } else {
@@ -73,7 +75,8 @@ const MaintenanceTasks = () => {
         description: '',
         priority: 'Medium',
         status: 'Pending',
-        assignedTo: ''
+        assignedTo: '',
+        blockRoom: false
       });
       setEditingId(null);
     }
@@ -302,6 +305,23 @@ const MaintenanceTasks = () => {
                 <option value="Resolved">Resolved</option>
               </select>
             </div>
+
+            {!isMaintenanceStaff && (
+              <div className="md:col-span-2 mt-2">
+                <label className="flex items-center gap-3 cursor-pointer p-4 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-colors">
+                  <input 
+                    type="checkbox" 
+                    className="w-5 h-5 text-red-600 rounded focus:ring-red-500 cursor-pointer"
+                    checked={formData.blockRoom}
+                    onChange={e => setFormData({...formData, blockRoom: e.target.checked})}
+                  />
+                  <div>
+                    <span className="block font-bold text-red-800">Mark Room as Out of Order (Block Bookings)</span>
+                    <span className="block text-xs text-red-600 mt-0.5">Check this if the room is not habitable and needs to be hidden from the website and reservations.</span>
+                  </div>
+                </label>
+              </div>
+            )}
           </div>
           
           <button type="submit" className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-95 transition-all shadow-lg mt-4">
