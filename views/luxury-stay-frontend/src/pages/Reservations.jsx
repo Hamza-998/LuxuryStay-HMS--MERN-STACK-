@@ -311,7 +311,7 @@ const Reservations = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingRes ? "Edit Booking" : "Add Booking"} maxWidth="max-w-4xl">
-        <form onSubmit={handleSubmit} className="space-y-6 max-h-[75vh] overflow-y-auto p-2">
+        <form onSubmit={handleSubmit} className="space-y-6">
           
           <h3 className="font-bold text-gray-800 text-lg border-b pb-2">Guest Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

@@ -20,7 +20,7 @@ const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' }) => {
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
         </div>
-        <div className="p-4 overflow-y-auto">
+        <div className="p-4 overflow-y-auto flex-1 min-h-0">
           {children}
         </div>
       </div>
