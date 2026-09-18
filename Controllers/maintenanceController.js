@@ -82,7 +82,7 @@ exports.updateMaintenanceStatus = async (req, res) => {
             await Room.findByIdAndUpdate(updatedRequest.roomId, { status: 'maintenance' });
         } else if (status === 'Resolved' || blockRoom === false) {
             // Restore room to proper status based on current active guests
-            const activeRes = await Reservation.findOne({ room: updatedRequest.roomId, status: 'checked-in' });
+            const activeRes = await Reservation.findOne({ roomId: updatedRequest.roomId, status: 'checked-in' });
             const correctStatus = activeRes ? 'occupied' : 'available';
             await Room.findByIdAndUpdate(updatedRequest.roomId, { status: correctStatus });
         }
