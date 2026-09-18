@@ -38,8 +38,9 @@ exports.getDashboardAnalytics = async (req, res) => {
 
         const totalGuests = await User.countDocuments({ role: 'guest' });
 
-        // 2. Room Status for Doughnut/Pie Chart
+        // 2. Room Status for Doughnut/Pie Chart (Exclude maintenance, only show available/occupied)
         const roomsByStatus = await Room.aggregate([
+            { $match: { status: { $regex: /^(available|occupied)$/i } } },
             { $group: { _id: { $toLower: '$status' }, count: { $sum: 1 } } }
         ]);
         const roomStatusData = roomsByStatus.map(r => ({ name: r._id.charAt(0).toUpperCase() + r._id.slice(1), value: r.count }));
