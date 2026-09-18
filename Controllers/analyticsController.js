@@ -33,8 +33,8 @@ exports.getDashboardAnalytics = async (req, res) => {
 
         const roomsToClean = await Room.countDocuments({ cleaningStatus: { $in: ['Dirty', 'Cleaning'] } });
         
-        // Count pending maintenance tasks instead of rooms in maintenance
-        const maintenanceRooms = await Maintenance.countDocuments({ status: 'Pending' });
+        // Count pending and in-progress maintenance tasks instead of rooms in maintenance
+        const maintenanceRooms = await Maintenance.countDocuments({ status: { $in: ['Pending', 'In Progress'] } });
 
         const totalGuests = await User.countDocuments({ role: 'guest' });
 

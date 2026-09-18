@@ -1,17 +1,16 @@
 const Maintenance = require('../Model/Maintenance');
 const Room = require('../Model/Room');
 const Notification = require('../Model/Notification');
+const Reservation = require('../Model/Reservation');
 
 exports.createMaintenanceRequest = async (req, res) => {
     try {
         const newRequest = new Maintenance(req.body);
         await newRequest.save();
 
-        // Optional: Update room status to 'maintenance' or 'cleaning' if urgent
-        if (req.body.issueType === 'Repair' && req.body.priority === 'Urgent') {
+        // If blockRoom is explicitly requested, block the room
+        if (req.body.blockRoom) {
             await Room.findByIdAndUpdate(req.body.roomId, { status: 'maintenance' });
-        } else if (req.body.issueType === 'Cleaning') {
-            await Room.findByIdAndUpdate(req.body.roomId, { status: 'cleaning' });
         }
 
         // Send Notification
@@ -54,7 +53,7 @@ exports.getStaffTasks = async (req, res) => {
 
 exports.updateMaintenanceStatus = async (req, res) => {
     try {
-        const { status, assignedTo, priority, issueType, description, roomId } = req.body;
+        const { status, assignedTo, priority, issueType, description, roomId, blockRoom } = req.body;
         const updateData = {};
         
         if (status) updateData.status = status;
@@ -78,9 +77,14 @@ exports.updateMaintenanceStatus = async (req, res) => {
             return res.status(404).json({ message: 'Request not found' });
         }
 
-        // If resolved, mark room as available again (if it was maintenance/cleaning)
-        if (status === 'Resolved') {
-            await Room.findByIdAndUpdate(updatedRequest.roomId, { status: 'available' });
+        // Handle Room Status Updates intelligently
+        if (blockRoom === true) {
+            await Room.findByIdAndUpdate(updatedRequest.roomId, { status: 'maintenance' });
+        } else if (status === 'Resolved' || blockRoom === false) {
+            // Restore room to proper status based on current active guests
+            const activeRes = await Reservation.findOne({ room: updatedRequest.roomId, status: 'checked-in' });
+            const correctStatus = activeRes ? 'occupied' : 'available';
+            await Room.findByIdAndUpdate(updatedRequest.roomId, { status: correctStatus });
         }
 
         res.json({ message: "Status updated successfully", data: updatedRequest });
