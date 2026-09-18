@@ -361,9 +361,6 @@ const PublicRooms = () => {
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400 font-light text-sm">No Image</div>
                     )}
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                      <span className="opacity-0 group-hover:opacity-100 text-white font-bold tracking-widest uppercase bg-black bg-opacity-50 px-4 py-2 rounded-lg transform scale-95 group-hover:scale-100 transition-all duration-300">Book Room</span>
-                    </div>
                   </div>
 
                   <div className="flex flex-col flex-grow gap-2 px-1">
