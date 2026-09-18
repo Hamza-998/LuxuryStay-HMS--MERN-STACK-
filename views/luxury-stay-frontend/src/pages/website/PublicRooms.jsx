@@ -297,7 +297,7 @@ const PublicRooms = () => {
   // ORIGINAL ROOMS LIST VIEW (No modifications below, except removing Modal)
   // ----------------------------------------------------------------------
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen animate-fade-in-up">
       <div className="relative bg-gray-900 text-white py-24 flex items-center justify-center text-center px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
