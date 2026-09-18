@@ -44,16 +44,10 @@ const Login = () => {
       const user = loginType === 'staff' ? data.staff : data.user;
       
       if (user) {
-        // Force admin role for the main admin email since DB defaults to guest
-        let overrideRole = user.role;
-        if (user.email === 'admin@luxurystay.com') {
-          overrideRole = 'admin';
-        }
-
         // Normalize staff object to match user structure if needed
         const loggedInUser = {
           ...user,
-          role: loginType === 'staff' ? user.role.toLowerCase() : overrideRole,
+          role: loginType === 'staff' ? user.role.toLowerCase() : user.role,
           isStaff: loginType === 'staff'
         };
         
