@@ -110,7 +110,7 @@ const WebsiteLayout = () => {
           <div className="hidden md:flex items-center gap-8 font-medium text-gray-700">
             <Link to="/" className="hover:text-blue-600 transition">Home</Link>
             <Link to="/about-us" className="hover:text-blue-600 transition">About Us</Link>
-            <Link to="/rooms" className="hover:text-blue-600 transition">Rooms</Link>
+            <Link to="/rooms" onClick={() => window.dispatchEvent(new Event('resetRoomsView'))} className="hover:text-blue-600 transition">Rooms</Link>
             <Link to="/gallery" className="hover:text-blue-600 transition">Gallery</Link>
             <Link to="/contact-us" className="hover:text-blue-600 transition">Contact Us</Link>
           </div>
@@ -283,7 +283,7 @@ const WebsiteLayout = () => {
             <div className="flex flex-col font-medium text-gray-700">
               <Link to="/" className="px-6 py-4 border-b border-gray-50 hover:bg-blue-50 hover:text-blue-600" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
               <Link to="/about-us" className="px-6 py-4 border-b border-gray-50 hover:bg-blue-50 hover:text-blue-600" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
-              <Link to="/rooms" className="px-6 py-4 border-b border-gray-50 hover:bg-blue-50 hover:text-blue-600" onClick={() => setIsMobileMenuOpen(false)}>Rooms</Link>
+              <Link to="/rooms" className="px-6 py-4 border-b border-gray-50 hover:bg-blue-50 hover:text-blue-600" onClick={() => { setIsMobileMenuOpen(false); window.dispatchEvent(new Event('resetRoomsView')); }}>Rooms</Link>
               <Link to="/gallery" className="px-6 py-4 border-b border-gray-50 hover:bg-blue-50 hover:text-blue-600" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
               <Link to="/contact-us" className="px-6 py-4 hover:bg-blue-50 hover:text-blue-600" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
             </div>

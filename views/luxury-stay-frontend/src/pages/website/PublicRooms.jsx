@@ -22,6 +22,15 @@ const PublicRooms = () => {
   });
 
   useEffect(() => {
+    const handleReset = () => {
+      setSelectedRoom(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('resetRoomsView', handleReset);
+    return () => window.removeEventListener('resetRoomsView', handleReset);
+  }, []);
+
+  useEffect(() => {
     const fetchRoomsAndUser = async () => {
       try {
         const storedUser = localStorage.getItem('user');
