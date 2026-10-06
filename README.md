@@ -41,7 +41,7 @@ LuxuryStay is a comprehensive full-stack Hotel Management System built with the 
    - Start the development server: `npm run dev`
 
 ## Live Demo
-🌐 **[Visit LuxuryStay HMS Live](https://luxurystay-hms.vercel.app)** *(Replace with your exact frontend URL if different)*
+🌐 **[Visit LuxuryStay HMS Live](https://luxurystay-hms-six.vercel.app/)**
 
 ## Contribution
-Designed and developed by **Hamza** for seamless hotel operations and enhanced guest experience.
+Designed and developed by **Muhammad Hamza** for seamless hotel operations and enhanced guest experience.
